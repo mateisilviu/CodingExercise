@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import com.core.velocity.spirent.birdapi.dto.AddBirdDTO;
 import com.core.velocity.spirent.birdapi.dto.BirdDTO;
 
 public interface BirdService {
@@ -13,5 +15,7 @@ public interface BirdService {
     public List<BirdDTO> getBirdsByName(String name);
 
     public List<BirdDTO> getBirdsByColor(String color);
+
+    public BirdDTO addBird(AddBirdDTO addBirdDTO);
 
 }

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.core.velocity.spirent.birdapi.dto.AddBirdDTO;
 import com.core.velocity.spirent.birdapi.dto.BirdDTO;
 import com.core.velocity.spirent.birdapi.model.Bird;
 import com.core.velocity.spirent.birdapi.repository.BirdRepository;
@@ -40,6 +41,17 @@ public class BirdServiceImpl implements BirdService {
         return birds.stream()
                 .map(BirdDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public BirdDTO addBird(AddBirdDTO addBirdDTO) {
+        Bird bird = new Bird();
+        bird.setName(addBirdDTO.getName());
+        bird.setColor(addBirdDTO.getColor());
+        bird.setHeight(addBirdDTO.getHeight());
+        bird.setWeight(addBirdDTO.getWeight());
+        Bird savedBirdInDB = birdRepository.save(bird);
+        return new BirdDTO(savedBirdInDB);
     }
 
 }
