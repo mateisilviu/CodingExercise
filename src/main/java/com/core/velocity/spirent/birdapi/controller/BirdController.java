@@ -10,10 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.core.velocity.spirent.birdapi.service.BirdService;
@@ -23,14 +21,13 @@ import com.core.velocity.spirent.birdapi.dto.BirdDTO;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/bird")
 @RequiredArgsConstructor
 public class BirdController {
 
     @Autowired
     final BirdService birdService;
 
-    @GetMapping("/")
+    @GetMapping("/birds/all")
     public Page<BirdDTO> getAll(@RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false, defaultValue = "id") String sort) {
@@ -38,25 +35,17 @@ public class BirdController {
         return birdService.getAllBirds(pageable);
     }
 
-    @PostMapping("/")
+    @PostMapping("/birds/add")
     public BirdDTO add(@RequestBody AddBirdDTO addBirdDTO) {
         return birdService.addBird(addBirdDTO);
     }
 
-    @GetMapping("/{name}")
-    public List<BirdDTO> getByName(@PathVariable String name) {
-        List<BirdDTO> bird = birdService.getBirdsByName(name);
+    @GetMapping("/birds/filter")
+    public List<BirdDTO> getBirdsByNameAndColor(@RequestParam(name = "name") String name,
+            @RequestParam(name = "color") String color) {
+        List<BirdDTO> bird = birdService.getBirdsByNameAndColor(name, color);
         if (null == bird || bird.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No birds found with name " + name);
-        }
-        return bird;
-    }
-
-    @GetMapping("/{color}")
-    public List<BirdDTO> getByColor(@PathVariable String color) {
-        List<BirdDTO> bird = birdService.getBirdsByColor(color);
-        if (null == bird || bird.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No birds found with color " + color);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return bird;
     }

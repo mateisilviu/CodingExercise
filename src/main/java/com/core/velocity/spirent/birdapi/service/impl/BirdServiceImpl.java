@@ -22,25 +22,17 @@ public class BirdServiceImpl implements BirdService {
 
     @Override
     public Page<BirdDTO> getAllBirds(Pageable pageable) {
-        Page<Bird> bird = birdRepository.findAll(pageable);
-        return bird.map(BirdDTO::new);
+        Page<Bird> birds = birdRepository.findAll(pageable);
+        return birds.map(BirdDTO::new);
     }
 
     @Override
-    public List<BirdDTO> getBirdsByName(String name) {
-        List<Bird> birds = birdRepository.findByName(name);
+    public List<BirdDTO> getBirdsByNameAndColor(String name, String color) {
+        List<Bird> birds = birdRepository.findByNameAndColor(name, color);
         return birds.stream()
                 .map(BirdDTO::new)
                 .collect(Collectors.toList());
 
-    }
-
-    @Override
-    public List<BirdDTO> getBirdsByColor(String color) {
-        List<Bird> birds = birdRepository.findByColor(color);
-        return birds.stream()
-                .map(BirdDTO::new)
-                .collect(Collectors.toList());
     }
 
     @Override

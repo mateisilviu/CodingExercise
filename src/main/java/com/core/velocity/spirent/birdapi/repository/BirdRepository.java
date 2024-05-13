@@ -8,8 +8,6 @@ import com.core.velocity.spirent.birdapi.model.Bird;
 
 public interface BirdRepository extends JpaRepository<Bird, String> {
 
-    List<Bird> findByName(String name);
-
-    List<Bird> findByColor(String color);
+    List<Bird> findByNameAndColor(String name, String color);
 
 }

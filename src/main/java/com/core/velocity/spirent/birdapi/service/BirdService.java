@@ -12,9 +12,7 @@ public interface BirdService {
 
     public Page<BirdDTO> getAllBirds(Pageable pageable);
 
-    public List<BirdDTO> getBirdsByName(String name);
-
-    public List<BirdDTO> getBirdsByColor(String color);
+    public List<BirdDTO> getBirdsByNameAndColor(String name, String color);
 
     public BirdDTO addBird(AddBirdDTO addBirdDTO);
 
