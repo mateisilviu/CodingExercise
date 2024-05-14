@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class BirdapiApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void whenSpringContextIsBootstrapped_thenNoExceptions() {
 	}
 
 }
