@@ -1,10 +1,9 @@
 package com.core.velocity.spirent.birdapi.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.BeanUtils;
 
-import com.core.velocity.spirent.birdapi.model.Bird;
 import com.core.velocity.spirent.birdapi.model.Sighting;
 
 import lombok.AllArgsConstructor;
@@ -20,11 +19,12 @@ public class SightingDTO {
 
     public SightingDTO(Sighting sighting) {
         BeanUtils.copyProperties(sighting, this);
+        this.bird = new BirdDTO(sighting.getBird());
     }
 
     private String id;
-    private Bird bird;
+    private BirdDTO bird;
     private String location;
-    private Date dateTime;
+    private LocalDateTime dateTime;
 
 }

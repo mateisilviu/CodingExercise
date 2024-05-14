@@ -1,0 +1,1 @@
+alter table sightings add column date_time TIMESTAMP NOT NULL;

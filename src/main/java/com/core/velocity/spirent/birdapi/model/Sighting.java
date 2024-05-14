@@ -1,13 +1,14 @@
 package com.core.velocity.spirent.birdapi.model;
 
-import java.util.Date;
-
+import java.time.LocalDateTime;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +30,10 @@ public class Sighting {
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bird_id", nullable = false)
     private Bird bird;
+    @Column(nullable = false)
     private String location;
-    private Date dateTime;
+    @Column(name = "date_time", nullable = false)
+    private LocalDateTime dateTime;
 }

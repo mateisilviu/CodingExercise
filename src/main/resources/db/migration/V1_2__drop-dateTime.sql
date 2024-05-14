@@ -1,0 +1,1 @@
+alter table sightings drop column dateTime;

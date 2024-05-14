@@ -16,4 +16,7 @@ public interface SightingRepository extends JpaRepository<Sighting, String> {
 
     List<Sighting> findByDateTimeBetween(LocalDateTime startDateTime, LocalDateTime endDateTime);
 
+    List<Sighting> findByLocationAndDateTimeBetween(String location, LocalDateTime startDateTime,
+            LocalDateTime endDateTime);
+
 }
