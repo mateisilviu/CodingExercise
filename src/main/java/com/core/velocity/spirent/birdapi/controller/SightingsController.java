@@ -1,7 +1,6 @@
 package com.core.velocity.spirent.birdapi.controller;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +10,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.core.velocity.spirent.birdapi.service.BirdService;
+import com.core.velocity.spirent.birdapi.config.exceptions.BadRequestException;
 import com.core.velocity.spirent.birdapi.service.SightingService;
-import com.core.velocity.spirent.birdapi.dto.AddBirdDTO;
 import com.core.velocity.spirent.birdapi.dto.AddSightingDTO;
-import com.core.velocity.spirent.birdapi.dto.BirdDTO;
 import com.core.velocity.spirent.birdapi.dto.SightingDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -71,7 +65,7 @@ public class SightingsController {
                     HttpStatus.OK);
         } else {
             // If none of the parameters are provided, return a bad request response
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new BadRequestException();
         }
     }
 }

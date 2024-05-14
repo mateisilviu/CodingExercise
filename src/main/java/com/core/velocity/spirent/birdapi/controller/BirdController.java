@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.core.velocity.spirent.birdapi.service.BirdService;
+import com.core.velocity.spirent.birdapi.config.exceptions.ResourceNotFoundException;
 import com.core.velocity.spirent.birdapi.dto.AddBirdDTO;
 import com.core.velocity.spirent.birdapi.dto.BirdDTO;
 
@@ -45,7 +46,7 @@ public class BirdController {
             @RequestParam(name = "color") String color) {
         List<BirdDTO> bird = birdService.getBirdsByNameAndColor(name, color);
         if (null == bird || bird.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException();
         }
         return bird;
     }
