@@ -15,6 +15,7 @@
 	<description>(Velocity Core) New hire software programming exercise</description>
 	<properties>
 		<java.version>11</java.version>
+		<docker.image.prefix>velocity</docker.image.prefix>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -57,29 +58,117 @@
 	</dependencies>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-							<version>1.18.24</version>
-						</path>
-					</annotationProcessorPaths>
-					<source>11</source>
-					<target>11</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+
+    <plugins>
+        <!-- Spring Boot Maven Plugin -->
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+                <excludes>
+                    <exclude>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                    </exclude>
+                </excludes>
+                <annotationProcessorPaths>
+                    <path>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                        <version>1.18.24</version>
+                    </path>
+                </annotationProcessorPaths>
+                <source>11</source>
+                <target>11</target>
+            </configuration>
+        </plugin>
+        
+        <!-- Surefire Plugin for unit tests -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+        </plugin>
+
+		   <!-- Docker Maven Plugin for managing Docker containers 
+        <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>start-docker-compose</id>
+                    <phase>pre-integration-test</phase>
+                    <goals>
+                        <goal>start</goal>
+                    </goals>
+                </execution>
+                <execution>
+                    <id>stop-docker-compose</id>
+                    <phase>post-integration-test</phase>
+                    <goals>
+                        <goal>stop</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <dockerHost>unix:///var/run/docker.sock</dockerHost>
+                <composeFile>docker-compose.yml</composeFile>
+                <images>
+                    <image>
+                        <name>${docker.image.prefix}/birdapi-db</name>
+                        <build>
+                            <dockerFile>Dockerfile</dockerFile>
+                        </build>
+                    </image>
+                </images>
+            </configuration>
+        </plugin>-->
+        
+        <!-- Failsafe Plugin for integration tests -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>integration-test</id>
+                    <goals>
+                        <goal>integration-test</goal>
+                        <goal>verify</goal>
+                    </goals>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <spring.profiles.active>integration</spring.profiles.active>
+                        </systemPropertyVariables>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+        
+        <!-- Flyway Maven Plugin for database migrations -->
+        <plugin>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-maven-plugin</artifactId>
+            <executions>
+                <execution>
+                    <phase>pre-integration-test</phase>
+                    <goals>
+                        <goal>migrate</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <url>jdbc:postgresql://localhost:5432/birdwatching</url>
+                <user>user</user>
+                <password>password</password>
+                <schemas>
+                    <schema>public</schema>
+                </schemas>
+                <locations>
+                    <location>filesystem:src/main/resources/db/migration</location>
+                </locations>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+
 
 </project>

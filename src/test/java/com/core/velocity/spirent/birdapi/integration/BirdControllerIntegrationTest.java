@@ -24,7 +24,7 @@ import com.core.velocity.spirent.birdapi.service.BirdService;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@ActiveProfiles("test")
+@ActiveProfiles("integration")
 @SpringBootTest
 @AutoConfigureMockMvc
 public class BirdControllerIntegrationTest {

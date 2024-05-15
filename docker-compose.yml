@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: bird_db
+    restart: always
+    environment:
+      POSTGRES_DB: birdwatching
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - bird_db_data:/var/lib/postgresql/data
+
+volumes:
+  bird_db_data:
