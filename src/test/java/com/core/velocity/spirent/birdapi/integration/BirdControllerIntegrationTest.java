@@ -17,12 +17,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.core.velocity.spirent.birdapi.dto.BirdDTO;
 import com.core.velocity.spirent.birdapi.service.BirdService;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+@ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
 public class BirdControllerIntegrationTest {
