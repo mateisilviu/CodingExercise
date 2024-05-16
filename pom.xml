@@ -90,43 +90,32 @@
         </plugin>
 
 		   <!-- Docker Maven Plugin for managing Docker containers -->
-        <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-             <executions>
-                <execution>
-                    <id>prepare-it-database</id>
-                    <phase>pre-integration-test</phase>
-                    <goals>
-                        <goal>start</goal>
-                    </goals>
-                    <configuration>
-                        <images>
-                            <image>
-                                <name>postgres:latest</name>
-                                <alias>it-database</alias>
-                                <run>
-                                    <ports>
-                                        <port>5432</port>
-                                    </ports>
-                                    <wait>
-                                        <log>(?s)database system is ready to accept connections.*database system is ready to accept connections</log>
-                                        <time>20000</time>
-                                    </wait>
-                                </run>
-                            </image>
-                        </images>
-                    </configuration>
-                </execution>
-                <execution>
-                    <id>remove-it-database</id>
-                    <phase>post-integration-test</phase>
-                    <goals>
-                        <goal>stop</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
+            <plugin>
+                <!-- Used to spin up an integration testing environment -->
+                <groupId>com.dkanejs.maven.plugins</groupId>
+                <artifactId>docker-compose-maven-plugin</artifactId>
+                <version>1.0.1</version>
+                <configuration>
+                    <composeFile>${project.basedir}/docker-compose.yml</composeFile>
+                    <detachedMode>true</detachedMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>docker-compose-up</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>up</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>docker-compose-down</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>down</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         
         <!-- Failsafe Plugin for integration tests -->
         <plugin>
