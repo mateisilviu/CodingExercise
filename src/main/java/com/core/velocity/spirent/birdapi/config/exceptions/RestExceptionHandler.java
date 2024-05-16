@@ -40,6 +40,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(new ApiError(HttpStatus.NOT_FOUND, ex));
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    protected ResponseEntity<Object> handleBadRequestException(BadRequestException ex) {
+        return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, ex));
+    }
+
     /**
      * java.time.format.DateTimeParseException
      */
