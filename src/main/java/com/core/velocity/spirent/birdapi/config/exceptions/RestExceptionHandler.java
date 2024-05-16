@@ -33,6 +33,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
+     * Handle javax.persistence.EntityNotFoundException
+     */
+    @ExceptionHandler(ResourceNotFoundException.class)
+    protected ResponseEntity<Object> handleResourceNotFound(ResourceNotFoundException ex) {
+        return buildResponseEntity(new ApiError(HttpStatus.NOT_FOUND, ex));
+    }
+
+    /**
      * java.time.format.DateTimeParseException
      */
     @ExceptionHandler(java.time.format.DateTimeParseException.class)
