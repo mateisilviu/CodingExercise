@@ -93,34 +93,39 @@
         <plugin>
             <groupId>io.fabric8</groupId>
             <artifactId>docker-maven-plugin</artifactId>
-            <executions>
+             <executions>
                 <execution>
-                    <id>start-docker-compose</id>
+                    <id>prepare-it-database</id>
                     <phase>pre-integration-test</phase>
                     <goals>
                         <goal>start</goal>
                     </goals>
+                    <configuration>
+                        <images>
+                            <image>
+                                <name>postgres:latest</name>
+                                <alias>it-database</alias>
+                                <run>
+                                    <ports>
+                                        <port>5432</port>
+                                    </ports>
+                                    <wait>
+                                        <log>(?s)database system is ready to accept connections.*database system is ready to accept connections</log>
+                                        <time>20000</time>
+                                    </wait>
+                                </run>
+                            </image>
+                        </images>
+                    </configuration>
                 </execution>
                 <execution>
-                    <id>stop-docker-compose</id>
+                    <id>remove-it-database</id>
                     <phase>post-integration-test</phase>
                     <goals>
                         <goal>stop</goal>
                     </goals>
                 </execution>
             </executions>
-            <configuration>
-                <dockerHost>unix:///var/run/docker.sock</dockerHost>
-                <composeFile>docker-compose.yml</composeFile>
-                <images>
-                    <image>
-                        <name>${docker.image.prefix}/birdapi-db</name>
-                        <build>
-                            <dockerFile>Dockerfile</dockerFile>
-                        </build>
-                    </image>
-                </images>
-            </configuration>
         </plugin>
         
         <!-- Failsafe Plugin for integration tests -->
