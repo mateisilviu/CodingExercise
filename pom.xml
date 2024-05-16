@@ -89,7 +89,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
         </plugin>
 
-		   <!-- Docker Maven Plugin for managing Docker containers 
+		   <!-- Docker Maven Plugin for managing Docker containers -->
         <plugin>
             <groupId>io.fabric8</groupId>
             <artifactId>docker-maven-plugin</artifactId>
@@ -121,7 +121,7 @@
                     </image>
                 </images>
             </configuration>
-        </plugin>-->
+        </plugin>
         
         <!-- Failsafe Plugin for integration tests -->
         <plugin>
