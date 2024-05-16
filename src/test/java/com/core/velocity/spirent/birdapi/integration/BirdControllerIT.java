@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("integration")
 @SpringBootTest
 @AutoConfigureMockMvc
-public class BirdControllerIntegrationTest {
+public class BirdControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
