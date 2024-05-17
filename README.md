@@ -13,26 +13,29 @@ The Birds and Sightings API allows users to log and retrieve bird sightings. It 
 - [Contributing](#contributing)
 - [License](#license)
 
-## Installation
+### Installation
 
 Follow these steps to set up the project locally:
 
+#### Clone the repository
 ```bash
-# Clone the repository
 git clone [https://github.com/yourusername/yourproject.git](https://github.com/mateisilviu/CodingExercise.git)
-
-# Navigate into the project directory
+```
+#### Navigate into the project directory
+```bash
 cd CodingExercise
-
-# Build the project using Maven Wrapper
+```
+#### Build the project using Maven Wrapper
+```bash
 ./mvnw clean install
+```
+### Usage
 
-## Usage
-
-# Start the application using Maven Wrapper
+### Start the application using Maven Wrapper
+```bash
 ./mvnw spring-boot:run
-
-## Packages Used
+```
+### Packages Used
 
 - **Spring Boot**: Framework for building Java-based web applications.
 - **Spring Data JPA**: Provides repositories for data access using JPA.
@@ -43,6 +46,6 @@ cd CodingExercise
 - **JUnit**: Testing framework for Java.
 - **Mockito**: Mocking framework for unit tests.
 
-## API Documentation
+### API Documentation
 
 After application is started, access [https://localhost:8080/swagger-ui/index.html](https://localhost:8080/swagger-ui/index.html)
