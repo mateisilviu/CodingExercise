@@ -128,7 +128,7 @@ public class SightingsControllerTest {
     void testModifySighting() throws Exception {
         when(sightingService.modifySighting(any(String.class), any(AddSightingDTO.class))).thenReturn(sightingDTO);
 
-        mockMvc.perform(put("/sightings/update/{id}", "sightingId")
+        mockMvc.perform(put("/sightings/modify/{id}", "sightingId")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(modifySightingDTO)))
                 .andExpect(status().isOk());
