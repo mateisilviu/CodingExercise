@@ -23,4 +23,8 @@ public interface SightingService {
 
     public List<SightingDTO> getSightingsByFilters(String location, LocalDateTime startDateTime,
             LocalDateTime endDateTime);
+
+    public SightingDTO modifySighting(String id, AddSightingDTO modifySightingDTO);
+
+    public void deleteSighting(String id);
 }

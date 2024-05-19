@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.core.velocity.spirent.birdapi.config.exceptions.ResourceNotFoundException;
 import com.core.velocity.spirent.birdapi.dto.AddSightingDTO;
 import com.core.velocity.spirent.birdapi.dto.SightingDTO;
 import com.core.velocity.spirent.birdapi.model.Bird;
@@ -71,6 +72,34 @@ public class SightingServiceImpl implements SightingService {
             LocalDateTime endDateTime) {
         var sightings = sightingRepository.findByLocationAndDateTimeBetween(location, startDateTime, endDateTime);
         return sightings.stream().map(SightingDTO::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public SightingDTO modifySighting(String id, AddSightingDTO updateSightingDTO) {
+        Sighting sighting = sightingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id, "Sighting not found"));
+
+        if (updateSightingDTO.getBirdId() != null) {
+            Bird bird = birdRepository.findById(updateSightingDTO.getBirdId())
+                    .orElseThrow(() -> new ResourceNotFoundException(updateSightingDTO.getBirdId(), "Bird not found"));
+            sighting.setBird(bird);
+        }
+        if (updateSightingDTO.getLocation() != null) {
+            sighting.setLocation(updateSightingDTO.getLocation());
+        }
+        if (updateSightingDTO.getDateTime() != null) {
+            sighting.setDateTime(updateSightingDTO.getDateTime());
+        }
+
+        Sighting updatedSighting = sightingRepository.save(sighting);
+        return new SightingDTO(updatedSighting);
+    }
+
+    @Override
+    public void deleteSighting(String id) {
+        Sighting sighting = sightingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id, "Sighting not found"));
+        sightingRepository.delete(sighting);
     }
 
 }

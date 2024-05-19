@@ -1,9 +1,12 @@
 package com.core.velocity.spirent.birdapi.test.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDateTime;
@@ -42,11 +45,13 @@ public class SightingsControllerTest {
 
     private SightingDTO sightingDTO;
     private AddSightingDTO addSightingDTO;
+    AddSightingDTO modifySightingDTO;
 
     @BeforeEach
     void setUp() {
         sightingDTO = new SightingDTO();
         addSightingDTO = new AddSightingDTO();
+        modifySightingDTO = new AddSightingDTO();
     }
 
     @Test
@@ -118,4 +123,23 @@ public class SightingsControllerTest {
         mockMvc.perform(get("/sightings/filter"))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void testModifySighting() throws Exception {
+        when(sightingService.modifySighting(any(String.class), any(AddSightingDTO.class))).thenReturn(sightingDTO);
+
+        mockMvc.perform(put("/sightings/update/{id}", "sightingId")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(modifySightingDTO)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testDeleteSighting() throws Exception {
+        doNothing().when(sightingService).deleteSighting("sightingId");
+
+        mockMvc.perform(delete("/sightings/delete/{id}", "sightingId"))
+                .andExpect(status().isNoContent());
+    }
+
 }

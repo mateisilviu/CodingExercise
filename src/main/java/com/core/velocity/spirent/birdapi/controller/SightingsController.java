@@ -10,8 +10,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -67,5 +70,16 @@ public class SightingsController {
             // If none of the parameters are provided, return a bad request response
             throw new BadRequestException();
         }
+    }
+
+    @PutMapping("/sightings/modify/{id}")
+    public SightingDTO update(@PathVariable String id, @RequestBody AddSightingDTO modifySightingDTO) {
+        return sightingService.modifySighting(id, modifySightingDTO);
+    }
+
+    @DeleteMapping("/sightings/delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        sightingService.deleteSighting(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
