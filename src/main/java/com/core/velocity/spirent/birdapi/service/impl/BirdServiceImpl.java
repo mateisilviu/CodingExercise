@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.core.velocity.spirent.birdapi.config.exceptions.ResourceNotFoundException;
 import com.core.velocity.spirent.birdapi.dto.AddBirdDTO;
 import com.core.velocity.spirent.birdapi.dto.BirdDTO;
 import com.core.velocity.spirent.birdapi.model.Bird;
@@ -44,6 +45,29 @@ public class BirdServiceImpl implements BirdService {
         bird.setWeight(addBirdDTO.getWeight());
         Bird savedBirdInDB = birdRepository.save(bird);
         return new BirdDTO(savedBirdInDB);
+    }
+
+    @Override
+    public BirdDTO modifyBird(String id, AddBirdDTO addBirdDTO) {
+        Bird bird = birdRepository.findById(id) //Optional<Bird>
+                .orElseThrow(() -> new ResourceNotFoundException(id,"Bird not found."));
+        
+        // Update the bird properties here
+        bird.setName(addBirdDTO.getName());
+        bird.setColor(addBirdDTO.getColor());
+        bird.setHeight(addBirdDTO.getHeight());
+        bird.setWeight(addBirdDTO.getWeight());
+
+        Bird updatedBird = birdRepository.save(bird);
+        return new BirdDTO(updatedBird);
+    }
+    
+
+    @Override
+    public void deleteBird(String id) {
+        Bird bird = birdRepository.findById(id) //Optional<Bird>
+                .orElseThrow(() -> new ResourceNotFoundException(id,"Bird not found."));
+        birdRepository.delete(bird);
     }
 
 }

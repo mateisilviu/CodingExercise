@@ -16,4 +16,8 @@ public interface BirdService {
 
     public BirdDTO addBird(AddBirdDTO addBirdDTO);
 
+    public BirdDTO modifyBird(String id, AddBirdDTO addBirdDTO);
+
+    public void deleteBird(String id);
+
 }

@@ -18,11 +18,15 @@ import com.core.velocity.spirent.birdapi.controller.BirdController;
 import com.core.velocity.spirent.birdapi.dto.AddBirdDTO;
 import com.core.velocity.spirent.birdapi.dto.BirdDTO;
 import com.core.velocity.spirent.birdapi.service.BirdService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Collections;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -37,11 +41,14 @@ public class BirdControllerTest {
         @MockBean
         private BirdService birdService;
 
+        private ObjectMapper objectMapper;
+
         @BeforeEach
         public void setUp() {
                 mockMvc = MockMvcBuilders.standaloneSetup(new BirdController(birdService))
                                 .setControllerAdvice(new RestExceptionHandler())
                                 .build();
+                objectMapper = new ObjectMapper();
         }
 
         @Test
@@ -73,7 +80,7 @@ public class BirdControllerTest {
 
                 mockMvc.perform(post("/birds/add")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content("{ \"name\": \"Parrot\", \"color\": \"Green\", \"weight\": 1.5, \"height\": 10.0 }"))
+                                .content(objectMapper.writeValueAsString(addBirdDTO)))
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$.id").value("1"))
                                 .andExpect(jsonPath("$.name").value("Parrot"))
@@ -110,4 +117,32 @@ public class BirdControllerTest {
                                 .param("color", "Unknown"))
                                 .andExpect(status().isNotFound());
         }
+
+         @Test
+    public void testModifyBird() throws Exception {
+        String birdId = "1";
+        AddBirdDTO addBirdDTO = new AddBirdDTO("Parrot", "Green", 1.5, 10.0);
+        BirdDTO expectedBirdDTO = new BirdDTO(birdId, "Parrot", "Green", 1.5, 10.0); // populate with expected data
+
+        when(birdService.modifyBird(eq(birdId), any(AddBirdDTO.class))).thenReturn(expectedBirdDTO);
+
+        mockMvc.perform(put("/birds/modify/{id}", birdId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(addBirdDTO)))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedBirdDTO)));
+
+        verify(birdService).modifyBird(eq(birdId), any(AddBirdDTO.class));
+    }
+
+    @Test
+    public void testDeleteBird() throws Exception {
+        String birdId = "1";
+        doNothing().when(birdService).deleteBird(birdId);
+
+        mockMvc.perform(delete("/birds/delete/{id}", birdId))
+                .andExpect(status().isOk());
+
+        verify(birdService).deleteBird(birdId);
+    }
 }
