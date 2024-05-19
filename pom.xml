@@ -186,7 +186,7 @@
             </executions>
         </plugin>
         
-        <!-- Flyway Maven Plugin for database migrations -->
+        <!-- Flyway Maven Plugin for database migrations 
         <plugin>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-maven-plugin</artifactId>
@@ -209,7 +209,7 @@
                     <location>filesystem:src/main/resources/db/migration</location>
                 </locations>
             </configuration>
-        </plugin>
+        </plugin>-->
     </plugins>
 </build>
 
