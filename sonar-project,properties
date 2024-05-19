@@ -1,0 +1,23 @@
+# SonarQube project identification
+sonar.projectKey=mateisilviu_CodingExercise
+sonar.organization=mateisilviu
+
+# SonarQube server URL
+sonar.host.url=https://sonarcloud.io
+
+# Paths to source code
+sonar.sources=src/main/java
+sonar.tests=src/test/java
+
+# Binaries and bytecode
+sonar.java.binaries=target/classes
+sonar.java.test.binaries=target/test-classes
+
+# Report paths for code coverage
+sonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+
+# Exclusions
+sonar.exclusions=**/*.py
+
+# Encoding of the source code
+sonar.sourceEncoding=UTF-8
